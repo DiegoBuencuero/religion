@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<style>
+  .hero-section {
+    position: relative;
+    height: 300px; /* ajustá la altura */
+    background: url("{% static 'assets/img/nosotros1.png' %}") no-repeat center center;
+    background-size: cover;
+  }
+  
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2); /* máscara blanca suave */
+    backdrop-filter: blur(0px); /* difumina la imagen */
+  }
+  
+  .hero-section .overlay {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #fff; /* o un tono oscuro según la máscara */
+  }
+  .agent-card {
+    background-color: #fff;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .agent-card h4,
+  .agent-card p {
+    transition: color 0.3s ease-in-out;
+  }
+  
+  /* Efecto hover */
+  .agent-card:hover {
+    background-color: #967673; /* podés cambiar a violeta, azul, dorado según tu estilo */
+    color: #fff;
+    transform: translateY(-5px); /* levanta un poco la card */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .agent-card:hover h4,
+  .agent-card:hover p {
+    color: #fff !important;
+  }
+  .agente-img {
+    max-width: 400px;   /* más grande */
+    height: auto;
+    border-radius: 15px; /* bordes redondeados */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* sombra elegante */
+    margin: 0 auto;
+  }
+  .bio-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: justify;
+    max-width: 90%;
+    margin-top: 15px;
+    padding: 15px 20px;
+    background: #fdfdfd;
+    border-left: 5px solid #82544b; /* usa el rojo de la paleta */
+    border-radius: 6px;
+    font-style: italic;
+    color: #444;
+  }
+</style>  
+<main class="main">
+  <div class="page-title">
+    <div class="hero-section">
+      <div class="overlay">
+        <div class="container text-center">
+          <h1 class="hero-title">{% translate "Contacto" %}</h1>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'index' %}">{% translate "Home" %}</a></li>
+          <li class="current">{% translate "About" %}</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
+  <section id="agents" class="agents section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">    
+        <!-- Nuestra Visión -->
+        <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+          <div class="agent-card text-center p-3 shadow-sm rounded h-100">
+            <div class="agent-info">
+              <h4 class="fw-bold mb-3">{% translate "Nuestra Visión" %}</h4>
+              <p class="text-secondary lh-lg">
+                {% translate "Anunciamos el Evangelio con esperanza, iluminando la vida de cada persona y acompañando con amor su camino de fe." %}
+              </p>
+            </div>
+          </div>
+        </div>  
+        <!-- Nuestra Fe -->
+        <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+          <div class="agent-card text-center p-3 shadow-sm rounded h-100">
+            <div class="agent-info">
+              <h4 class="fw-bold mb-3">{% translate "Nuestra Fe" %}</h4>
+              <p class="text-secondary lh-lg">
+                {% translate "Nuestra fe nos sostiene y nos impulsa a seguir a Cristo con entrega total, llevando su luz a quienes más lo necesitan." %}
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Nuestra Comunidad -->
+        <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+          <div class="agent-card text-center p-3 shadow-sm rounded h-100">
+            <div class="agent-info">
+              <h4 class="fw-bold mb-3">{% translate "Nuestra Comunidad" %}</h4>
+              <p class="text-secondary lh-lg">
+                {% translate "Vivimos la fraternidad, compartiendo nuestra vocación en comunidad y sirviendo juntas al pueblo de Dios." %}
+              </p>
+            </div>
+          </div>
+        </div>  
+  
+      </div>
+    </div>
+  </section>
+  <section id="agents" class="agents section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row justify-content-center align-items-center">
+
+        <div class="col-lg-4 col-md-5 text-center" data-aos="fade-right" data-aos-delay="200">
+          <div class="featured-agent">
+            <img src="{% static 'assets/img/hermana1.png' %}" 
+                 alt="Featured Agent" 
+                 class="img-fluid agente-img">
+          </div>
+        </div>
+      
+        <div class="col-lg-6 col-md-7" data-aos="fade-left" data-aos-delay="200">
+          <div class="featured-content">
+            <h3>{% translate "Madre Isis Stela" %}</h3>
+            <span class="position">
+              {% translate "Superiora Geral do Instituto das Irmãs Diocesanas do Divino Coração" %}
+            </span>
+            <blockquote class="bio-text">
+              {% blocktrans %}
+              Aos 24 de abril de 2010, Jesus inspirava em seu coração algo novo, uma inquietação que resultaria em uma profunda resposta. 
+              Sua vida voltada inteiramente para saber o que o Senhor dela esperava, também alcançou outras jovens.
+              Entre 12 e 15 de outubro de 2013, o desejo do Coração de Nosso Senhor tornou-se concreto, Madre Isis fundou o Carisma do Instituto das Irmãs Diocesanas!
+              A Cidade de Santa Rita, na Paraíba, foi solo de Fundação. 
+              Ser Elo de Aliança entre o Bom Pastor e suas ovelhas, até que haja um só Pastor e um só rebanho (Jo 10,16) – Tendo como modelo a Virgem Maria nas Bodas de Caná.
+              {% endblocktrans %}
+            </blockquote>
+          </div>
+        </div>
+      </div>     
+      <div class="row mt-5">
+        <div class="col-12" data-aos="fade-up" data-aos-delay="300">
+          <h4 class="section-subtitle">Our Expert Team</h4>
+          <p class="section-description">Meet our dedicated professionals who are committed to helping you find your perfect home or sell your property at the best value.</p>
+        </div>
+      </div>
+      <div class="row gy-4">
+        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+          <div class="agent-card">
+            <div class="agent-photo">
+              <img src="{% static 'assets/img/hermana2.png' %}" alt="Agent" class="img-fluid">
+              <div class="hover-overlay">
+                <div class="contact-actions">
+                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
+                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
+                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="agent-info">
+              <h5>Michael Chen</h5>
+              <span class="role">Property Consultant</span>
+              <div class="location">
+                <i class="bi bi-geo-alt"></i>
+                <span>Brooklyn Heights</span>
+              </div>
+              <div class="languages">
+                <span class="lang-tag">English</span>
+                <span class="lang-tag">Mandarin</span>
+              </div>
+              <a href="#" class="view-listings">View Listings</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+          <div class="agent-card">
+            <div class="agent-photo">
+              <img src="{% static 'assets/img/hermana3.png' %}" alt="Agent" class="img-fluid">
+              <div class="hover-overlay">
+                <div class="contact-actions">
+                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
+                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
+                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="agent-info">
+              <h5>Sarah Johnson</h5>
+              <span class="role">Commercial Specialist</span>
+              <div class="location">
+                <i class="bi bi-geo-alt"></i>
+                <span>Manhattan</span>
+              </div>
+              <div class="languages">
+                <span class="lang-tag">English</span>
+                <span class="lang-tag">Spanish</span>
+              </div>
+              <a href="#" class="view-listings">View Listings</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+          <div class="agent-card">
+            <div class="agent-photo">
+              <img src="{% static 'assets/img/hermana2.png' %}" alt="Agent" class="img-fluid">
+              <div class="hover-overlay">
+                <div class="contact-actions">
+                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
+                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
+                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="agent-info">
+              <h5>Michael Chen</h5>
+              <span class="role">Property Consultant</span>
+              <div class="location">
+                <i class="bi bi-geo-alt"></i>
+                <span>Brooklyn Heights</span>
+              </div>
+              <div class="languages">
+                <span class="lang-tag">English</span>
+                <span class="lang-tag">Mandarin</span>
+              </div>
+              <a href="#" class="view-listings">View Listings</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+          <div class="agent-card">
+            <div class="agent-photo">
+              <img src="{% static 'assets/img/hermana3.png' %}" alt="Agent" class="img-fluid">
+              <div class="hover-overlay">
+                <div class="contact-actions">
+                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
+                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
+                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="agent-info">
+              <h5>Sarah Johnson</h5>
+              <span class="role">Commercial Specialist</span>
+              <div class="location">
+                <i class="bi bi-geo-alt"></i>
+                <span>Manhattan</span>
+              </div>
+              <div class="languages">
+                <span class="lang-tag">English</span>
+                <span class="lang-tag">Spanish</span>
+              </div>
+              <a href="#" class="view-listings">View Listings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

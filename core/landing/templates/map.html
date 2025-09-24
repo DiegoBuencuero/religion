@@ -1,0 +1,395 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.min.js"></script>
+
+
+<style>
+  /* Barra de filtros */
+  .filters-bar {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    padding: 0.25rem; 
+    gap: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-top: 0.25rem; /* pegado al nav */
+  }
+  
+  /* Selects */
+  .filters-bar .form-select,
+  .filters-bar .form-control {
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    box-shadow: none;
+    transition: all 0.2s ease;
+  }
+  
+  .filters-bar .form-select:focus,
+  .filters-bar .form-control:focus {
+    border-color: var(--accent-color);
+    outline: none;
+  }
+  
+  /* Botón filtros */
+  .filters-bar .btn-filters {
+    border-radius: 40px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    background: #fff;
+    transition: all 0.2s ease;
+    width: 100% !important; /* siempre llenar columna */
+  }
+  .filters-bar .btn-filters:hover {
+    background: var(--accent-color);
+    color: #fff;
+  }
+  
+  /* Toggle Buy / Rent */
+  .transaction-toggle {
+    display: inline-flex;
+    border: 1px solid var(--accent-color);
+    border-radius: 40px;
+    overflow: hidden;
+    width: 100% !important; /* forzar ancho */
+  }
+  .transaction-toggle input[type="radio"] {
+    display: none;
+  }
+  .transaction-toggle label {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  .transaction-toggle label:first-of-type { border-radius: 40px 0 0 40px; }
+  .transaction-toggle label:last-of-type { border-radius: 0 40px 40px 0; }
+  .transaction-toggle input:checked + label {
+    background: var(--accent-color);
+    color: #fff;
+  }
+  
+  /* Hero spacing */
+  .hero-section {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  /* Custom markers */
+  .custom-marker {
+    background: #fff;
+    border: 1px solid var(--accent-color);
+    border-radius: 11px;
+    padding: 1px 1px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .custom-marker .price { font-size: 11px; }
+  
+  /* Tabs filtros */
+  .nav-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #666;
+    font-weight: 500;
+  }
+  .nav-tabs .nav-link.active {
+    color: #000;
+    border-bottom: 2px solid var(--accent-color);
+  }
+  
+  .btn-pill {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.85rem;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  .btn-pill:hover, .btn-pill:focus {
+    background: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+  }
+  
+  /* Botón aplicar */
+  .btn-apply {
+    border-radius: 20px;
+    background: var(--accent-color);
+    color: #fff;
+  }
+  
+  /* Verde en inputs nativos */
+  .form-check-input:checked {
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color);
+  }
+  input[type="checkbox"]:checked,
+  input[type="radio"]:checked {
+    accent-color: var(--accent-color) !important;
+  }
+  .form-range::-webkit-slider-thumb {
+    background-color: var(--accent-color) !important;
+  }
+  .form-range::-moz-range-thumb {
+    background-color: var(--accent-color) !important;
+  }
+  
+</style>
+<main class="main">
+  <section id="hero" class="hero-section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="hero-content">
+        <div class="row align-items-center">
+          <div class="col-lg-12 hero-text">
+            <form class="filters-bar w-100 my-3">
+              <div class="row g-2 align-items-center">     
+
+                <!-- Buy / Rent -->
+                <div class="col-md-2 col-6">
+                  <div class="transaction-toggle">
+                    <input type="radio" id="buy" name="transaction" checked>
+                    <label for="buy">Buy</label>                  
+                    <input type="radio" id="rent" name="transaction">
+                    <label for="rent">Rent</label>
+                  </div>
+                </div>            
+
+                <!-- Price range -->
+                <div class="col-md-3 col-6">
+                  <select class="form-select" id="price-range" name="price_range">
+                    <option value="">Price range</option>
+                    <option value="0-200000">Under $200K</option>
+                    <option value="200000-500000">$200K - $500K</option>
+                    <option value="500000-800000">$500K - $800K</option>
+                    <option value="800000-1200000">$800K - $1.2M</option>
+                    <option value="1200000+">Above $1.2M</option>
+                  </select>
+                </div>
+
+                <!-- Search -->
+                <div class="col-md-3 col-12">
+                  <input type="text" class="form-control" placeholder="Enter a neighborhood, city, or ZIP code">
+                </div>            
+
+                <!-- Tools -->
+                <div class="col-md-2 col-12">
+                  <div class="dropdown">
+                    <button class="btn btn-filters dropdown-toggle w-100" type="button" id="toolsMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                      Tools
+                    </button>
+                    <ul class="dropdown-menu shadow rounded-3 border-0" aria-labelledby="toolsMenu" style="min-width: 240px;">
+                      <li class="px-3 py-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <div>
+                            <i class="bi bi-circle me-2 text-secondary"></i>
+                            <span>Radius</span>
+                          </div>
+                          <input type="number" id="radiusValue" class="form-control form-control-sm text-end" placeholder="km" style="width: 70px;">
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="enableRadiusTool()">Apply Radius</button>
+                      </li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item d-flex align-items-center" href="#" onclick="enablePolygonTool()"><i class="bi bi-hexagon me-2 text-secondary"></i> Polygon</a></li>
+                      <li><a class="dropdown-item d-flex align-items-center" href="#" onclick="enableMeasureTool()"><i class="bi bi-rulers me-2 text-secondary"></i> Measure</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item d-flex align-items-center text-danger" href="#" onclick="clearDrawings()"><i class="bi bi-trash me-2"></i> Clear</a></li>
+                    </ul>
+                  </div>      
+                </div>
+
+                <!-- All Filters -->
+                <div class="col-md-2 col-12">
+                  <div class="dropdown">
+                    <button class="btn btn-filters dropdown-toggle" type="button" id="allFilters" data-bs-toggle="dropdown" aria-expanded="false">
+                      All Filters
+                    </button>
+                    <div class="dropdown-menu p-3 shadow-lg rounded-4" style="min-width: 420px;" aria-labelledby="allFilters">
+                      
+                      <!-- Tabs -->
+                      <ul class="nav nav-tabs mb-3" id="filterTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link active" id="sale-tab" data-bs-toggle="tab" data-bs-target="#sale" type="button" role="tab">For Sale</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">For Rent</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link" id="sold-tab" data-bs-toggle="tab" data-bs-target="#sold" type="button" role="tab">Sold</button>
+                        </li>
+                      </ul>
+       
+                        <!-- PRICE -->
+                        <div class="mb-3">
+                          <h6 class="fw-bold small">Price</h6>
+                          <div class="d-flex gap-2">
+                            <input type="number" class="form-control form-control-sm" placeholder="Min">
+                            <input type="number" class="form-control form-control-sm" placeholder="Max">
+                          </div>
+                          <input type="range" class="form-range mt-2">
+                        </div>              
+                        <!-- BEDROOMS -->
+                        <div class="mb-3">
+                          <h6 class="fw-bold small">Bedrooms</h6>
+                          <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-pill">Any</button>
+                            <button class="btn btn-pill">1</button>
+                            <button class="btn btn-pill">2</button>
+                            <button class="btn btn-pill">3</button>
+                            <button class="btn btn-pill">4+</button>
+                          </div>
+                        </div>
+                        <!-- BATHROOMS -->
+                        <div class="mb-3">
+                          <h6 class="fw-bold small">Bathrooms</h6>
+                          <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-pill">Any</button>
+                            <button class="btn btn-pill">1+</button>
+                            <button class="btn btn-pill">2+</button>
+                            <button class="btn btn-pill">3+</button>
+                          </div>
+                        </div>              
+                        <!-- PROPERTY TYPE -->
+                        <div class="mb-3">
+                          <h6 class="fw-bold small">Property Type</h6>
+                          <div class="row g-1">
+                            <div class="col-6">
+                              <div class="form-check"><input class="form-check-input" type="checkbox"> House</div>
+                              <div class="form-check"><input class="form-check-input" type="checkbox"> Condo</div>
+                              <div class="form-check"><input class="form-check-input" type="checkbox"> Townhouse</div>
+                            </div>
+                            <div class="col-6">
+                              <div class="form-check"><input class="form-check-input" type="checkbox"> Land</div>
+                              <div class="form-check"><input class="form-check-input" type="checkbox"> Commercial</div>
+                              <div class="form-check"><input class="form-check-input" type="checkbox"> MultiFamily</div>
+                            </div>
+                          </div>
+                        </div>              
+                        <!-- Footer -->
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                          <button class="btn btn-link text-danger p-0">Reset</button>
+                          <button class="btn btn-apply px-3">See Properties</button>
+                        </div>                     
+                      </div>
+                    </div>
+                  </div>      
+                </div>
+              </div>
+            </form> 
+          </div>
+
+          <!-- Mapa -->
+          <div id="map" style="width:100%; height:600px; border-radius:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const locations = JSON.parse("{{ locations|escapejs }}");
+
+    var map = L.map("map", {
+      center: [39.0, -98.0],
+      zoom: 4,
+      minZoom:8,
+      maxZoom: 20,
+    });
+
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://www.carto.com/">CARTO</a>',
+      subdomains: "abcd",
+      opacity: 0.8,
+    }).addTo(map);
+    
+  
+
+    locations.forEach((loc) => {
+      if (loc.lat && loc.lng) {
+        let iconClass = "bi bi-geo-alt";
+        if (loc.tipo === "Casa") iconClass = "bi bi-house-fill";
+        else if (loc.tipo === "Oficina") iconClass = "bi bi-building";
+        else if (loc.tipo === "Terreno") iconClass = "bi bi-tree";
+
+        let iconHtml = `<i class="${iconClass}" style="color: var(--accent-color); font-size: 18px;"></i>`;
+
+        const customIcon = L.divIcon({
+          className: "custom-marker",
+          html: `
+            <div class="marker-content d-flex align-items-center">
+              ${iconHtml}
+              <span class="price ms-1">$${loc.precio}k</span>
+            </div>
+          `,
+          iconSize: [72, 31],
+          iconAnchor: [35, 20],
+        });
+
+        L.marker([loc.lat, loc.lng], { icon: customIcon })
+          .addTo(map)
+          .bindPopup(`<b>${loc.titulo}</b><br>${loc.ciudad}, ${loc.pais}`);
+      }
+    });
+
+
+    //  Tools 
+
+    window.enableRadiusTool = () => {
+      const km = document.getElementById("radiusValue").value;
+      if (!km) {
+        alert("Enter a radius in km");
+        return;
+      }
+      console.log(` Drawing radius of ${km} km...`);
+      map.once("click", (e) => {
+        const circle = L.circle(e.latlng, { radius: km * 1000, color: "blue", opacity: 0.6 });
+        circle.addTo(map);
+      });
+    };
+
+    window.enablePolygonTool = () => {
+      console.log("⬠ Polygon tool activated");
+      // Aquí integrás Leaflet.Geoman o Leaflet.draw
+    };
+
+    window.enableMeasureTool = () => {
+      console.log("📏 Measure tool activated");
+      // Aquí integrás Leaflet.Measure o Geoman measurement
+    };
+
+    window.clearDrawings = () => {
+      console.log("🧹 Clearing all drawings");
+      map.eachLayer((layer) => {
+        if (layer instanceof L.Circle || layer instanceof L.Polygon) {
+          map.removeLayer(layer);
+        }
+      });
+    };
+  });
+</script>
+
+
+{% endblock %}

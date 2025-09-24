@@ -1,0 +1,74 @@
+{% block nav %}
+<style>
+  /* Solo aplica a la sidebar de cuenta; no toca el header */
+  .account-nav .navmenu > ul{display:block;margin:0;padding:0;}
+  .account-nav .navmenu > ul > li{list-style:none;}
+  .account-nav .navmenu > ul > li + li{margin-top:.5rem;}
+  
+  .account-nav .navmenu a{
+    display:flex; align-items:center; gap:.5rem;
+    text-decoration:none;
+    color: var(--default-color);
+    padding:.5rem .75rem; border-radius:.5rem;
+  }
+  
+  .account-nav .navmenu a:hover,
+  .account-nav .navmenu a.active{
+    color: var(--accent-color);
+    background: var(--surface-color);
+  }
+
+  /* Que quede pegada bajo el header fijo y ocupe el alto visible */
+  .account-sidebar{
+    background:#fff;
+    position: sticky;     /* se mantiene bajo el header al hacer scroll */
+    top: 90px;            /* altura del header fixed-top (ajustá si tu header mide distinto) */
+    padding-top: .25rem;
+  }
+  
+
+  /* Asegura que el aside sea el contenedor del ::after */
+  .account-sidebar { position: sticky; }
+  .account-sidebar { /* sticky ya sirve como contenedor; si querés, podés forzar relative */
+    /* position: relative; */ /* descomentá si tu navegador no pinta el ::after */
+  }
+
+  .container.mt-4 {
+ 
+    border-right: 1px solid grey;   /* derecha */
+
+  }
+
+  </style>
+  
+  <div class="container mt-4">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-12 col-md-3 account-sidebar">
+      <nav class="account-nav">
+        <div class="navmenu navmenu-vertical">
+          <ul>
+            <li>
+              <a href="{% url 'favorite' %}"
+                 class="{% if request.resolver_match.url_name == 'favorite' %}active{% endif %}">
+                <i class="bi bi-heart fs-5 me-2"></i><span>Favorites</span>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'logout' %}"
+                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right fs-5 me-2"></i><span>Logout</span>
+              </a>
+              <form id="logout-form" action="{% url 'logout' %}" method="POST" class="d-none">
+                {% csrf_token %}
+              </form>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    
+  </div>
+</div>
+{% endblock %}
+

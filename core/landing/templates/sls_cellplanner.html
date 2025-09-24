@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+{% load static %}
+{% load bootstrap4 %}
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block head_title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href={% static "vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+
+    <script src={% static "vendor/jquery/jquery.js" %} type="text/javascript"></script>
+    <script src="https://unpkg.com/@googlemaps/markerwithlabel/dist/index.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src={% static "vendor/bootstrap/js/bootstrap.bundle.js" %} type="text/javascript"></script>
+    <script src={% static "vendor/bootstrap/js/bootstrap.js" %}></script>
+
+    <!-- Custom styles for this template -->
+    <link href={% static "css/simple-sidebar.css" %} rel="stylesheet">
+    <link href={% static "vendor/select2/select2.min.css" %} rel="stylesheet">
+
+    <script src={% static "vendor/select2/select2.full.min.js" %}></script>
+
+    <style>
+        .hidden {
+            display: none !important;
+        }
+
+        .img-header {
+            position: absolute;
+            top: 0;
+            height: 77px;
+        }
+
+        .img-responsive {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .row {
+            background-color: #F8F8F8;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        input[type=checkbox] {
+            /* Double-sized Checkboxes */
+            -ms-transform: scale(1.5); /* IE */
+            -moz-transform: scale(1.5); /* FF */
+            -webkit-transform: scale(1.5); /* Safari and Chrome */
+            -o-transform: scale(1.5); /* Opera */
+            transform: scale(1.5);
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        .form-check {
+            padding-left: 2.25rem;
+        }
+
+        .user-menu {
+            margin-top: 15px;
+            right: 15px;
+            position: absolute;
+        }
+
+        .inicio-menu {
+            margin-top: 15px;
+            right: 150px;
+            position: absolute;
+            border-right: #4e555b solid 2px;
+        }
+
+        .labels {
+            color: #000000;
+            background-color: white;
+            font-family: Roboto, Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            width: 47px;
+            padding: 2px;
+            border: 1px solid #999;
+            box-sizing: border-box;
+            white-space: nowrap;
+        }
+
+
+        input[type="number"] {
+            -webkit-appearance: textfield;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
+
+        .number-input {
+            border: 2px solid #ddd;
+            display: inline-flex;
+            margin-top: 10px;
+        }
+
+        .number-input,
+        .number-input * {
+            box-sizing: border-box;
+        }
+
+        .number-input input {
+            width: 80px;
+            text-align: center;
+        }
+
+        input[type="number"][disabled] {
+            color: #008CFA;
+            background-color: #FFFFFF;
+            border: none;
+        }
+
+        .number-input button {
+            outline: none;
+            -webkit-appearance: none;
+            background-color: transparent;
+            border: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 25px;
+            margin: 0;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+{% load bootstrap4 %}
+<script>
+    let map;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: {lat: -34.6131500, lng: -58.3772300},
+            zoom: 14,
+        });
+
+        google.maps.event.addListener(map, 'click', function (event) {
+            drawOnclick(event.latLng.lat(), event.latLng.lng());
+        });
+    }
+</script>
+{% csrf_token %}
+<div class="container-fluid" style="padding-left: 0; padding-right: 0; height: 100%">
+    <div class="row" style="height: 100%">
+        {% comment %}<div class="col-sm-12" style="height: 77px">{% endcomment %}
+        <img class="img-responsive img-header" style="min-width: 101%"
+             src="{% static 'cellplanner/header.png' %}" alt="User Image">
+
+        <a href="/" class="nav-link inicio-menu">Inicio</a>
+
+        <a href="/logout" class="nav-link user-menu">
+            Cerrar Sesi&oacute;n
+        </a>
+
+
+        <div class="col-sm-2 cellplanner-left" style="padding-right: 0; overflow-y: scroll;">
+            <div class="form-group col-md-12" style="margin-top: 30px; text-align: center">
+                <input style="width: 100%; border-radius: 5px; border: #000000 solid 1px;" type="text" name="latlon"
+                       id="latlon"
+                       class="form-control"
+                       placeholder="ID, Latitud, Longitud">
+                <button onclick="getAntenas()"
+                        style="width: 100%; border-radius: 8px; background: #008CFA; margin-top: 10px"
+                        type="submit"
+                        class="btn btn-primary btn-block btn-flat">Buscar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img
+                        style="margin-left: 30px;"
+                        width="30"
+                        src="{% static 'cellplanner/buscar.png' %}"
+                        alt="Buscar">
+                </button>
+                <button onclick="carga_data()"
+                        style="width: 100%; border-radius: 8px; background: #008CFA; margin-top: 10px"
+                        type="submit"
+                        class="btn btn-primary btn-block btn-flat">Cargar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img
+                        style="margin-left: 30px;"
+                        width="30"
+                        src="{% static 'cellplanner/cargar.png' %}"
+                        alt="Buscar">
+                </button>
+                <div class="number-input hidden">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown(); ">
+                        -
+                    </button>
+                    <input disabled class="quantity" min="0" id="distance" name="quantity" value="0" type="number"
+                           step="50">
+                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp();"
+                            class="plus">+
+                    </button>
+                </div>
+                <button id="reporte_generar"
+                        onclick="generateReport()"
+                        style="color: #FFFFFF; width: 70%; border-radius: 8px; margin-top: 10px; margin-left: 15%; background-color: #A6A6A6; border-color: #A6A6A6;"
+                        type="submit"
+                        class="btn btn-light btn-block btn-flat hidden">Generar
+                </button>
+                <button onclick="reporte()"
+                        style="width: 100%; border-radius: 8px; background: #008CFA; margin-top: 10px"
+                        type="submit"
+                        class="btn btn-primary btn-block btn-flat">Reporte&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img
+                        style="margin-left: 30px;"
+                        width="30"
+                        src="{% static 'cellplanner/reportes.png' %}"
+                        alt="Reporte">
+                </button>
+                <button onclick="limpiar()"
+                        style="width: 100%; border-radius: 8px; background: #008CFA; margin-top: 10px"
+                        type="submit"
+                        class="btn btn-primary btn-block btn-flat">Limpiar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img
+                        style="margin-left: 30px;"
+                        width="30"
+                        src="{% static 'cellplanner/limpiar.png' %}"
+                        alt="Limipiar">
+                </button>
+                <button onclick="herramientas()"
+                        style="width: 100%; border-radius: 8px; background: #008CFA; margin-top: 10px"
+                        type="submit"
+                        class="btn btn-primary btn-block btn-flat">Herramientas<img
+                        style="margin-left: 30px;"
+                        width="30"
+                        src="{% static 'cellplanner/herramientas.png' %}"
+                        alt="Limipiar">
+                </button>
+                <div style="padding-top: 10px" class="hidden" id="tab-herramientas">
+                    <ul class="nav nav-tabs">
+                        <li class='nav-item'>
+                            <a class='nav-link active' data-toggle='tab' href='#line'>Linea</a>
+                        </li>
+                        <li class='nav-item'>
+                            <a class='nav-link ' data-toggle='tab' href='#circle'>C&iacute;rculo</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class='tab-pane container fade in show active' id='line' style="padding-top: 10px">
+                            <button style="padding: .375rem 5px; background-color: #A6A6A6; border-color: #A6A6A6;"
+                                    onClick="selectPointLine()" id="btn-line" name="btn-line"
+                                    class="btn btn-success button-loading"
+                                    data-loading-text="Loading...">Seleccionar
+                            </button>
+                            <div class="form-group" style="text-align: left; margin-bottom: 5px; margin-top: 5px">
+                                <label for="radio" style="margin-bottom: 0">Distancia (m)</label>
+                                <input disabled
+                                       type="number" name="distanceLine" id="distanceLine" class="input-large">
+                            </div>
+                        </div>
+                        <div class='tab-pane container fade' id='circle' style="padding-top: 10px">
+                            <button style="padding: .375rem 5px; background-color: #A6A6A6; border-color: #A6A6A6;"
+                                    onClick="selectPointCircle()" id="btn-circle"
+                                    name="btn-circle"
+                                    class="btn btn-success button-loading"
+                                    data-loading-text="Loading...">Seleccionar
+                            </button>
+                            <div class="form-group" style="text-align: left; margin-bottom: 5px; margin-top: 5px">
+                                <label for="radio" style="margin-bottom: 0">Radio (m)</label>
+                                <input onchange="setCircle($(this), 'radio')"
+                                       type="number" name="radio" id="radio" class="input-large">
+                            </div>
+                            <div class="form-group" style="text-align: left; margin-bottom: 5px">
+                                <label for="area" style="margin-bottom: 0">&Aacute;rea (m<sup>2</sup>)</label>
+                                <input onchange="setCircle($(this), 'area')"
+                                       type="number" name="area" id="area"
+                                       class="input-large">
+                            </div>
+                            {#                            <div class="form-group" style="text-align: left">#}
+                            {#                                <label for="circunferencia" style="margin-bottom: 0">Circunferencia</label>#}
+                            {#                                <input style="width: 130px" onchange="setCircle($(this), 'circunferencia')"#}
+                            {#                                       type="number" name="circunferencia"#}
+                            {#                                       id="circunferencia" class="input-large">&nbsp;m#}
+                            {#                            </div>#}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12" style="margin-top: 50px; margin-bottom: 50px;">
+                {% for el in propietario %}
+                    <div class='form-check'>
+                        <input checked='true' onchange='filtrarAntenas($(this), {{ el.idpropietario }})'
+                               class='form-check-input' type='checkbox' name='propietario-{{ el.idpropietario }}'
+                               id='propietario-{{ el.idpropietario }}'>
+                        <label style='margin-left: 10px; font-size: 18px; font-weight: normal;' class='form-check-label'
+                               for='flexRadioTim'>
+                            {{ el.propietario }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="form-group col-md-12">
+                <img style="margin: auto; width: 45%; margin-left: 20%" class="img-responsive"
+                     src="{% static 'cellplanner/logo.png' %}" alt="User Image">
+            </div>
+
+        </div>
+        <div class="col-sm-10 cellplanner-right" style="padding-left: 0">
+            <div id="map"></div>
+
+            <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+            <script
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7HFACYvCBB9900HF5Hs9a_fhKGQJFRpg&callback=initMap&libraries=&v=weekly&libraries=geometry"
+                    async
+            ></script>
+        </div>
+    </div>
+    {% comment %}<iframe src="http://cellplanner.22web.org/" title="description" style="width: 100%; height: 100vh"/>{% endcomment %}
+</div>
+
+<div class="modal fade" id="modal_form_importar" role="dialog">
+    <div class="modal-dialog" style="width: 70% !important; height: 100% !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Formulario importar</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body form">
+                <input type="hidden" value="" name="id"/>
+                <div class="form-body" style="overflow-y: auto; height:fit-content; max-height: 400px;">
+                    <div id="wrap">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-1 hidden-phone"></div>
+                                <div class="col-sm-10" id="form-login">
+                                    <fieldset>
+                                        <legend>Seleccionar Archivo</legend>
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <input type="file" name="fileCsv" id="fileCsv" class="input-large">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <button onClick=readCsv() id="submit" name="Import"
+                                                        class="btn btn-primary button-loading"
+                                                        data-loading-text="Loading...">Importar&nbsp;&nbsp;<i
+                                                        class="fa fa-fw fa-upload"></i>
+                                                </button>
+
+                                                <a id="download" class="btn btn-primary button-loading"
+                                                   href="{% static 'excel/plantilla/plantilla.xlsx' %}"
+                                                   download data-loading-text="Loading...">Descargar Plantilla&nbsp;&nbsp;<i
+                                                        class="fa fa-fw fa-download"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-sm-1 hidden-phone"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_form_reporte" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Formulario Producto</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body form">
+                <form action="#" id="form" class="form-horizontal">
+                    <input type="hidden" value="" name="id"/>
+                    <div class="form-body" style="overflow-y: auto; height:fit-content; max-height: 400px;">
+                        <!-- /.PROPIETARIO -->
+                        <div class="form-group col-md-12">
+                            <label>PROPIETARIO</label>
+                            <select class="form-control select2" multiple="multiple"
+                                    data-placeholder="Seleccione propietarios"
+                                    style="width: 100%;" name="idpropietario" id="idpropietario">
+                                {% for el in propietario %}
+                                    <option value="{{ el.propietario }}">{{ el.propietario }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- /.ESTADO -->
+                        <div class="form-group col-md-12">
+                            <label>ESTADO</label>
+                            <select class="form-control select2" multiple="multiple"
+                                    data-placeholder="Seleccione estados"
+                                    style="width: 100%;" name="idestado" id="idestado">
+                                {% for el in estados %}
+                                    <option value="{{ el.0 }}">{{ el.1 }}</option>
+                                {% endfor %}
+                                <option value="Operativo">Operativo</option>
+                            </select>
+                        </div>
+                        <!-- /.ID -->
+                        <div class="form-group col-md-12">
+                            <label>ID</label>
+                            <select class="form-control select2" multiple="multiple" data-placeholder="Seleccione id's"
+                                    style="width: 100%;"
+                                    name="id" id="id">
+                                {% for el in casos %}
+                                    <option value={{ el.ID_interno }}>{{ el.ID_interno }}</option>
+                                {% endfor %}
+                                {% for el in externos %}
+                                    <option value={{ el.ID }}>{{ el.ID }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- /.PROVINCIA -->
+                        <div class="form-group col-md-12">
+                            <label>PROVINCIA</label>
+                            <select class="form-control select2" multiple="multiple"
+                                    data-placeholder="Seleccione provincias"
+                                    style="width: 100%;" name="idprovincia" id="idprovincia">
+                                {% for el in provincia %}
+                                    <option value="{{ el }}">{{ el }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- /.ESTRUCTURA -->
+                        <div class="form-group col-md-12">
+                            <label>ESTRUCTURA</label>
+                            <select class="form-control select2" multiple="multiple"
+                                    data-placeholder="Seleccione estructuras"
+                                    style="width: 100%;" name="idestructura" id="idestructura">
+                                {% for el in estructura %}
+                                    <option value="{{ el }}">{{ el }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                {#                http://cellplanner.22web.org/home/reporte/0/0/0/0/0#}
+                <button onclick="reporteFiltro()" style="background-color: #A6A6A6; border-color: #A6A6A6;"
+                        class="btn btn-success btn-rounded btn-custom waves-light m-b-5" id="btn-reporte">Generar
+                    Reporte
+                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+
+<script type="text/javascript">
+    let markers = [];
+    let archivo = null;
+    let locations = [];
+    let selectCircles = false;
+    let selectLines = false;
+    let lineStart = [];
+    let lineEnd = [];
+    let circles = [];
+    let lines = [];
+    var filter = [1, 2, 3, 4];
+    var filterName = {'OI': 1, 'TIM': 2, 'TOWER CO': 3, 'VIVO': 4};
+    let iconos = {
+        "1": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(28, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/1.png' %}"
+        }, "TIM": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(28, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/2.png' %}"
+        }, "3": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(28, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/3.png' %}"
+        }, "4": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(28, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/4.png' %}"
+        }, "5": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(22, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/operativo.png' %}"
+        }, "6": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(22, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/licenciamiento.png' %}"
+        }, "7": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(22, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/construccion.png' %}"
+        }, "8": {
+            anchor: new google.maps.Point(0, 32),
+            origin: new google.maps.Point(0, 0),
+            scaledSize: new google.maps.Size(22, 30),
+            size: new google.maps.Size(64, 64),
+            url: "{% static 'cellplanner/propietario/adquisicion.png' %}"
+        }
+    };
+
+    $(document).ready(function () {
+        $(".select2").select2();
+        $("#fileCsv").change(function (e) {
+            archivo = e;
+        });
+        $(".cellplanner-left").css({'margin-top': $(".img-header").height() + "px"})
+        $(".cellplanner-left").height('calc(100% - ' + $(".img-header").height() + 'px)');
+        $(".cellplanner-right").height('calc(100% - ' + $(".img-header").height() + 'px)');
+        $(".cellplanner-right").css({'margin-top': $(".img-header").height() + "px"})
+        getInitData();
+    });
+    var csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+    var post_data = null;
+
+    function csrfSafeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    function getInitData() {
+        let index = 0;
+        let latMarker = '';
+        let lonMarker = '';
+        {% for ele in casos %}
+            latMarker = '{{ ele.latitud }}';
+            lonMarker = '{{ ele.longitud }}';
+            marker = new MarkerWithLabel({
+                position: new google.maps.LatLng(latMarker.replace(',', '.'), lonMarker.replace(',', '.')),
+                map: map,
+                icon: {
+                    anchor: new google.maps.Point(0, 32),
+                    origin: new google.maps.Point(0, 0),
+                    scaledSize: new google.maps.Size(22, 30),
+                    size: new google.maps.Size(64, 64),
+                    url: "{% static 'cellplanner/propietario/construccion.png' %}"
+                },
+                draggable: false,
+                raiseOnDrag: false,
+                labelContent: '{{ele.ID_interno}}',
+                labelAnchor: new google.maps.Point(-10, 3),
+                labelClass: "labels",
+                labelStyle: {opacity: 0.75},
+                id: filterName['TOWER CO'],
+                propietario: '{{ele.proveedor}}',
+                cliente1: '{{ele.cliente}}',
+                estado: '{{ele.estado}}'
+            });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: 'Hello world',
+                pixelOffset: new google.maps.Size(-15, 0)
+            });
+
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                return function () {
+                    if (selectCircles || selectLines) {
+                        drawOnclick(marker.getPosition().lat(), marker.getPosition().lng())
+                    } else {
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Propietario: </b>' + marker.propietario + ' <br/>' +
+                            '<b>Estado: </b>' + marker.estado + ' <br/>' +
+                            '<b>Cliente 1: </b>' + marker.cliente1 + ' <br/>' +
+                            '</p>' +
+                            '</div>' +
+                            '</div>';
+
+                        infowindow.setContent(contentString);
+                        infowindow.open(map, marker);
+                    }
+                }
+            })(marker, index));
+            markers.push(marker);
+            index++;
+        {% endfor %}
+
+        {% for ele in externos %}
+            latMarker = '{{ ele.latitud }}';
+            lonMarker = '{{ ele.longitud }}';
+            marker = new MarkerWithLabel({
+                position: new google.maps.LatLng(latMarker.replace(',', '.'), lonMarker.replace(',', '.')),
+                map: map,
+                icon: iconos['{{ele.propietario}}'],
+                draggable: false,
+                raiseOnDrag: false,
+                labelContent: '{{ele.ID}}',
+                labelAnchor: new google.maps.Point(-10, 3),
+                labelClass: "labels",
+                labelStyle: {opacity: 0.75},
+                id: filterName['{{ele.propietario}}'],
+                propietario: '{{ele.propietario}}',
+                estructura: '{{ele.estructura.descripcion}}',
+                altura_e: '{{ele.estructura_h}}',
+                cliente1: null,
+                cliente2: null,
+                estado: '{{ele.estado}}'
+            });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: 'Hello world',
+                pixelOffset: new google.maps.Size(-15, 0)
+            });
+
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                return function () {
+                    if (selectCircles || selectLines) {
+                        drawOnclick(marker.getPosition().lat(), marker.getPosition().lng())
+                    } else {
+                        var contentString = '<div id="content">' +
+                            '<div id="siteNotice">' +
+                            '</div>' +
+                            '<div id="bodyContent">' +
+                            '<p><b>Propietario: </b>' + marker.propietario + ' <br/>' +
+                            '<b>Estructura: </b>' + marker.estructura + ' <br/>' +
+                            '<b>Altura Estructura: </b>' + marker.altura_e + ' <br/>';
+                        if (marker.propietario === 'TOWER CO') {
+                            contentString += '<b>Estado: </b>' + marker.estado + ' <br/>';
+                        }
+                        if (marker.cliente1 !== null && marker.cliente1 !== 'null') {
+                            contentString += '<b>Cliente 1: </b>' + marker.cliente1 + ' <br/>';
+                        }
+                        if (marker.cliente2 !== null && marker.cliente2 !== 'null') {
+                            contentString += '<b>Cliente 2: </b>' + marker.cliente2 + ' <br/>';
+                        }
+                        contentString += '</p>' +
+                            '</div>' +
+                            '</div>';
+
+                        infowindow.setContent(contentString);
+                        infowindow.open(map, marker);
+                    }
+                }
+            })(marker, index));
+            markers.push(marker);
+            index++;
+        {% endfor %}
+
+        let latIni = '{{ casos.0.latitud }}';
+        let lonIni = '{{ casos.0.longitud }}';
+        const center = new google.maps.LatLng(latIni.replace(',', '.'), lonIni.replace(',', '.'));
+        map.panTo(center);
+    }
+
+    function getAntenas() {
+        let latlon = $('#latlon').val().replace(/ /g, '').split(",");
+        if (latlon.length < 2) {
+            var lat = 0;
+            var lng = 0;
+            $.each(markers, function (index, ele) {
+                if ($("#latlon").val().toUpperCase() === ele.label.labelDiv.innerText) {
+                    lat = ele.getPosition().lat();
+                    lng = ele.getPosition().lng();
+                    return false;
+                }
+            });
+
+            if (lat !== 0 && lng !== 0) {
+                const center = new google.maps.LatLng(lat, lng);
+                map.panTo(center);
+                map.setZoom(18);
+            }
+        } else {
+            var marker;
+            const center = new google.maps.LatLng(latlon[0], latlon[1]);
+            map.panTo(center);
+
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(latlon[0], latlon[1]),
+                map: map,
+                id: -1
+            });
+
+            markers.push(marker);
+        }
+    }
+
+    function filtrarAntenas(e, id) {
+        if (e.is(':checked')) {
+            filter.push(id)
+        } else {
+            var index = filter.indexOf(id);
+            if (index > -1) {
+                filter.splice(index, 1);
+            }
+        }
+        $.each(markers, function (index, ele) {
+            var index = filter.indexOf(Number(ele.id));
+            if (Number(ele.id) > -1) {
+                if (index > -1 || Number(ele.id) === 0) {
+                    ele.setVisible(true);
+                } else {
+                    ele.setVisible(false);
+                }
+            }
+        });
+    }
+
+    function limpiar() {
+        var newMarker = [];
+        $.each(markers, function (index, ele) {
+            if (Number(ele.id) === -1) {
+                ele.setMap(null);
+            } else {
+                newMarker.push(ele)
+            }
+        });
+        markers = newMarker;
+        $(".number-input").addClass('hidden');
+        $("#reporte_generar").addClass('hidden');
+        for (var i in circles) {
+            circles[i].setMap(null);
+        }
+        circles = [];
+        for (var i in lines) {
+            lines[i].setMap(null);
+        }
+        lines = [];
+    }
+
+    function carga_data() {
+        $('#file').val(null);
+        $('.form-control').removeClass('has-error'); // clear error class
+        $('.form-group').removeClass('has-error')
+            .removeClass('has-success');
+        $('.text-danger').remove();
+        $('.help-block').empty(); // clear error string
+        $('#modal_form_importar').modal('show'); // show bootstrap modal
+        $('.modal-title').text('Carga Datos'); // Set Title to Bootstrap modal title
+    }
+
+    function readCsv() {
+        var ext = $("#fileCsv").val().split(".").pop().toLowerCase();
+        if ($.inArray(ext, ["csv", "xls", "xlsx"]) === -1) {
+            alert('No es archivo CSV');
+            return false;
+        }
+        if (archivo.target.files !== undefined) {
+            const reader = new FileReader();
+            let dataFinal = [];
+            if (ext === "csv") {
+                reader.onload = function (e) {
+                    const lines = e.target.result.split('\r\n');
+                    for (let i = 0; i < lines.length; ++i) {
+                        let dataCsv = lines[i].split(',');
+                        if (dataCsv.length > 1) {
+                            if (dataCsv[0] !== "ID" && dataCsv[0] !== "") {
+                                dataFinal.push(dataCsv)
+                            }
+                        } else {
+                            let dataCsv = lines[i].split(';');
+                            if (dataCsv.length > 1) {
+                                if (dataCsv[0] !== "ID" && dataCsv[0] !== "") {
+                                    dataFinal.push(dataCsv)
+                                }
+                            }
+                        }
+                    }
+                    importar(dataFinal)
+                };
+                reader.readAsText(archivo.target.files.item(0));
+            } else {
+                reader.onload = function (e) {
+                    var data = e.target.result;
+                    var workbook = XLSX.read(data, {
+                        type: 'binary'
+                    });
+                    workbook.SheetNames.forEach(function (sheetName) {
+                        // Here is your object
+                        var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                        var json_object = JSON.stringify(XL_row_object);
+                        var json_object = JSON.parse(json_object);
+                        for (let i = 0; i < json_object.length; ++i) {
+                            if (json_object[i].ID !== "") {
+                                dataFinal.push([json_object[i].ID, json_object[i].Owner, parseFloat(json_object[i].Latitud), parseFloat(json_object[i].Longitud)])
+                            }
+                        }
+                    });
+                    importar(dataFinal)
+                };
+                reader.readAsBinaryString(archivo.target.files.item(0));
+            }
+        }
+    }
+
+    function importar(data) {
+        locations = data;
+        limpiar();
+        var marker, i;
+        for (i = 0; i < data.length; i++) {
+            marker = new MarkerWithLabel({
+                position: new google.maps.LatLng(data[i][2], data[i][3]),
+                map: map,
+                icon: {
+                    anchor: new google.maps.Point(0, 32),
+                    origin: new google.maps.Point(0, 0),
+                    scaledSize: new google.maps.Size(25, 35),
+                    size: new google.maps.Size(64, 64),
+                    url: "{% static 'cellplanner/propietario/carga.png' %}"
+                },
+                draggable: false,
+                raiseOnDrag: false,
+                labelContent: data[i][0],
+                labelAnchor: new google.maps.Point(-7, 3),
+                labelClass: "labels",
+                labelStyle: {opacity: 0.75},
+                id: -1
+            });
+            markers.push(marker);
+        }
+        const center = new google.maps.LatLng(data[0][2], data[0][3]);
+        map.panTo(center);
+        map.setZoom(14);
+        $(".number-input").removeClass('hidden');
+        $("#reporte_generar").removeClass('hidden');
+        $('#modal_form_importar').modal('hide');
+    }
+
+    function selectPointCircle() {
+        selectCircles = true;
+        $("#btn-circle").prop('disabled', true);
+    }
+
+    function selectPointLine() {
+        selectLines = true;
+        $("#btn-line").prop('disabled', true);
+    }
+
+    function drawOnclick(lat, long) {
+        if (selectCircles) {
+            for (var i in circles) {
+                circles[i].setMap(null);
+            }
+            circles = [];
+            let circle = new google.maps.Circle({
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+                draggable: true,
+                editable: true,
+                map: map,
+                center: {
+                    lat: lat,
+                    lng: long
+                },
+                radius: 1000,
+                clickable: false
+            });
+
+            google.maps.event.addListener(circle, 'radius_changed', function (event) {
+                let radio = parseFloat(circle.radius);
+                let area = Math.PI * radio * radio;
+                {#let circunferencia = Math.PI * 2 * radio;#}
+                $('#radio').val(radio.toFixed(2))
+                $('#area').val(area.toFixed(2))
+                {#$('#circunferencia').val(circunferencia.toFixed(2))#}
+            });
+
+            circles.push(circle)
+            selectCircles = false;
+            $('#radio').val(circles[0].radius)
+            $('#area').val((Math.PI * parseFloat(circles[0].radius) * parseFloat(circles[0].radius)).toFixed(2))
+            {#$('#circunferencia').val((Math.PI * 2 * parseFloat(circles[0].radius)).toFixed(2))#}
+            $("#btn-circle").prop('disabled', false);
+        } else if (selectLines) {
+            for (var i in lines) {
+                lines[i].setMap(null);
+            }
+            lines = [];
+            if (lineStart.length < 1) {
+                lineStart = [lat, long];
+            } else if (lineEnd.length < 1) {
+                lineEnd = [lat, long];
+            }
+            if (lineStart.length > 0 && lineEnd.length > 0) {
+                let line = new google.maps.Polyline({
+                    path: [
+                        {lat: lineStart[0], lng: lineStart[1]},
+                        {lat: lineEnd[0], lng: lineEnd[1]}
+                    ], editable: true,
+                    map: map
+                });
+                bounds = new google.maps.LatLngBounds();
+
+                line.getPath().getArray().forEach(function (ll) {
+                    bounds.extend(ll);
+                });
+                map.fitBounds(bounds);
+
+                google.maps.event.addListener(line.getPath(), 'set_at', function (e) {
+                    var polylineLength = google.maps.geometry.spherical.computeLength(line.getPath());
+                    $("#distanceLine").val(polylineLength.toFixed(2))
+                });
+
+                google.maps.event.addListener(line.getPath(), 'insert_at', function () {
+                    var polylineLength = google.maps.geometry.spherical.computeLength(line.getPath());
+                    $("#distanceLine").val(polylineLength.toFixed(2))
+                });
+
+                var polylineLength = google.maps.geometry.spherical.computeLength(line.getPath());
+                $("#distanceLine").val(polylineLength.toFixed(2))
+
+                lines.push(line);
+                $("#btn-line").prop('disabled', false);
+                lineStart = '';
+                lineEnd = '';
+                selectLines = false;
+            }
+        }
+    }
+
+    function setCircle(e, type) {
+        let radio = 0;
+        let area = 0;
+        {#let circunferencia = 0;#}
+        if (type === 'radio') {
+            radio = parseFloat(e.val());
+            area = Math.PI * radio * radio;
+            {#circunferencia = Math.PI * 2 * radio;#}
+        } else if (type === 'area') {
+            area = Math.sqrt(parseFloat(e.val()));
+            radio = area / Math.PI;
+            {#circunferencia = Math.PI * 2 * radio;#}
+        } else if (type === 'circunferencia') {
+            {#circunferencia = parseFloat(e.val());#}
+            {#radio = circunferencia / (Math.PI * 2);#}
+            area = Math.PI * radio * radio;
+        }
+        $('#radio').val(radio.toFixed(2))
+        $('#area').val(area.toFixed(2))
+        {#$('#circunferencia').val(circunferencia.toFixed(2))#}
+        circles[0].setRadius(parseFloat(e.val()));
+    }
+
+    function generateReport() {
+        if (post_data)
+            post_data.abort();
+        post_data = $.post({
+            'url': '{% url "export_excel" %}',
+            'data': {
+                'distance': $('#distance').val(), 'locations': JSON.stringify({
+                    items: locations
+                })
+            }
+        }).done(function () {
+            let link = document.createElement('a');
+            link.href = '{% static "excel/reporte.xls" %}';
+            link.download = 'reporte.xls';
+            link.click();
+        })
+    }
+
+    function reporteFiltro() {
+        var newId = 0;
+        if ($('#id').val() !== null) {
+            var myId = $('#id').val().join();
+            newId = myId.replace(/,/g, '-');
+        }
+
+        var newPropietario = 0;
+        if ($('#idpropietario').val() !== null) {
+            var myPropietario = $('#idpropietario').val().join();
+            newPropietario = myPropietario.replace(/,/g, '-');
+        }
+
+        var newEstado = 0;
+        if ($('#idestado').val() !== null) {
+            var myEstado = $('#idestado').val().join();
+            newEstado = myEstado.replace(/,/g, '-');
+        }
+
+        var newProvincia = 0;
+        if ($('#idprovincia').val() !== null) {
+            var myProvincia = $('#idprovincia').val().join();
+            newProvincia = myProvincia.replace(/,/g, '-');
+        }
+
+        var newEstructura = 0;
+        if ($('#idestructura').val() !== null) {
+            var myEstructura = $('#idestructura').val().join();
+            newEstructura = myEstructura.replace(/,/g, '-');
+        }
+
+        if (post_data)
+            post_data.abort();
+        post_data = $.post({
+            'url': '{% url "export_excel_reporte" %}',
+            'data': {
+                'id': newId,
+                'propietario': newPropietario,
+                'estado': newEstado,
+                'provincia': newProvincia,
+                'estructura': newEstructura
+            }
+        }).done(function () {
+            let link = document.createElement('a');
+            link.href = '{% static "excel/reporte.xls" %}';
+            link.download = 'reporte.xls';
+            link.click();
+            $("#modal_form_reporte").modal('hide');
+            $('#id').empty();
+            $('#idpropietario').empty();
+            $('#idestado').empty();
+            $('#idprovincia').empty();
+            $('#idestructura').empty();
+        })
+    }
+
+    function reporte() {
+        $('#form')[0].reset(); // reset form on modals
+        $('.form-control').removeClass('has-error'); // clear error class
+        $('.form-group').removeClass('has-error')
+            .removeClass('has-success');
+        $('.text-danger').remove();
+        $('.help-block').empty(); // clear error string
+        $('#modal_form_reporte').modal('show'); // show bootstrap modal
+        $('.modal-title').text('Generar Reporte'); // Set Title to Bootstrap modal title
+    }
+
+    function herramientas() {
+        if ($('#tab-herramientas').attr('class') === 'hidden') {
+            $('#tab-herramientas').removeClass('hidden')
+        } else {
+            $('#tab-herramientas').addClass('hidden')
+        }
+    }
+</script>
+
+</body>
+
+</html>
