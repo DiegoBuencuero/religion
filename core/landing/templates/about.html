@@ -5,7 +5,7 @@
 <style>
   .hero-section {
     position: relative;
-    height: 300px; /* ajustá la altura */
+    height: 450px; /* ajustá la altura */
     background: url("{% static 'assets/img/nosotros1.png' %}") no-repeat center center;
     background-size: cover;
   }
@@ -17,7 +17,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.2); /* máscara blanca suave */
+    background: rgba(255,255,255,0.1); /* máscara blanca suave */
     backdrop-filter: blur(0px); /* difumina la imagen */
   }
   
@@ -78,13 +78,24 @@
     font-style: italic;
     color: #444;
   }
+
+  
+  .quem-somos-card h5 {
+    color: #ffffff;               /* letras blancas */
+    font-size: 22px;              /* tamaño proporcionado */
+    line-height: 1.8;             /* interlineado elegante */
+    font-weight: 400;             /* no muy grueso */
+    font-family: 'Montserrat', sans-serif; /* tipografía limpia */
+
+     
+  }
 </style>  
 <main class="main">
   <div class="page-title">
     <div class="hero-section">
       <div class="overlay">
         <div class="container text-center">
-          <h1 class="hero-title">{% translate "Contacto" %}</h1>
+          {% comment %} <h1 class="hero-title">{% translate "Contacto" %}</h1> {% endcomment %}
         </div>
       </div>
     </div>
@@ -97,6 +108,19 @@
       </div>
     </nav>
   </div>
+  <section class="real-estate-services-3 services section" id="services">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">   
+      <div class="cta-section" data-aos="fade-up" data-aos-delay="400">
+        <div class="row align-items-center">
+          <div class="quem-somos-card ">
+            <h5>
+              {% translate "Somos na Igreja de Cristo, um Instituto Apostólico de Vida Religiosa Consagrada, por natureza uma Associação Pública de fiéis que deseja na Igreja ser oferta generosa e alegre de zelo missionário junto aos seus Pastores, pastorais, movimentos e serviços, até que haja um só pastor e um só rebanho (Jo 10,16) e especialmente para aqueles que o nosso Senhor mais prefere: os pobres!" %}
+            </h5>
+          </div>
+        </div>
+      </div>  
+    </div>  
+  </section>
   <section id="agents" class="agents section">
     <div class="container" data-aos="fade-up" data-aos-delay="100">
       <div class="row gy-4">    
@@ -178,13 +202,6 @@
           <div class="agent-card">
             <div class="agent-photo">
               <img src="{% static 'assets/img/hermana2.png' %}" alt="Agent" class="img-fluid">
-              <div class="hover-overlay">
-                <div class="contact-actions">
-                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
-                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
-                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-                </div>
-              </div>
             </div>
             <div class="agent-info">
               <h5>Michael Chen</h5>
@@ -192,10 +209,6 @@
               <div class="location">
                 <i class="bi bi-geo-alt"></i>
                 <span>Brooklyn Heights</span>
-              </div>
-              <div class="languages">
-                <span class="lang-tag">English</span>
-                <span class="lang-tag">Mandarin</span>
               </div>
               <a href="#" class="view-listings">View Listings</a>
             </div>
@@ -205,24 +218,15 @@
           <div class="agent-card">
             <div class="agent-photo">
               <img src="{% static 'assets/img/hermana3.png' %}" alt="Agent" class="img-fluid">
-              <div class="hover-overlay">
-                <div class="contact-actions">
-                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
-                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
-                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-                </div>
+              <div class="hover-overlay">                
               </div>
             </div>
             <div class="agent-info">
-              <h5>Sarah Johnson</h5>
-              <span class="role">Commercial Specialist</span>
+              <h5>Michael Chen</h5>
+              <span class="role">Property Consultant</span>
               <div class="location">
                 <i class="bi bi-geo-alt"></i>
-                <span>Manhattan</span>
-              </div>
-              <div class="languages">
-                <span class="lang-tag">English</span>
-                <span class="lang-tag">Spanish</span>
+                <span>Brooklyn Heights</span>
               </div>
               <a href="#" class="view-listings">View Listings</a>
             </div>
@@ -232,12 +236,7 @@
           <div class="agent-card">
             <div class="agent-photo">
               <img src="{% static 'assets/img/hermana2.png' %}" alt="Agent" class="img-fluid">
-              <div class="hover-overlay">
-                <div class="contact-actions">
-                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
-                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
-                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-                </div>
+              <div class="hover-overlay">                  
               </div>
             </div>
             <div class="agent-info">
@@ -246,10 +245,6 @@
               <div class="location">
                 <i class="bi bi-geo-alt"></i>
                 <span>Brooklyn Heights</span>
-              </div>
-              <div class="languages">
-                <span class="lang-tag">English</span>
-                <span class="lang-tag">Mandarin</span>
               </div>
               <a href="#" class="view-listings">View Listings</a>
             </div>
@@ -260,23 +255,14 @@
             <div class="agent-photo">
               <img src="{% static 'assets/img/hermana3.png' %}" alt="Agent" class="img-fluid">
               <div class="hover-overlay">
-                <div class="contact-actions">
-                  <a href="#" class="action-btn" title="Call"><i class="bi bi-telephone"></i></a>
-                  <a href="#" class="action-btn" title="Email"><i class="bi bi-envelope"></i></a>
-                  <a href="#" class="action-btn" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-                </div>
               </div>
             </div>
             <div class="agent-info">
-              <h5>Sarah Johnson</h5>
-              <span class="role">Commercial Specialist</span>
+              <h5>Michael Chen</h5>
+              <span class="role">Property Consultant</span>
               <div class="location">
                 <i class="bi bi-geo-alt"></i>
-                <span>Manhattan</span>
-              </div>
-              <div class="languages">
-                <span class="lang-tag">English</span>
-                <span class="lang-tag">Spanish</span>
+                <span>Brooklyn Heights</span>
               </div>
               <a href="#" class="view-listings">View Listings</a>
             </div>

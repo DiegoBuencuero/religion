@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Index - TheProperty Bootstrap Template</title>
+  <title>Irmãs Diocesanas</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -78,12 +78,13 @@
     </a>
     <nav id="navmenu" class="navmenu">
       <ul>
-        <li><a href="{% url 'index' %}" class="active">{% translate "home" %}</a></li>
-        <li><a href="{% url 'about' %}">{% translate "nosotros" %}</a></li>
-        <li><a href="{% url 'services' %}">{% translate "vocacional" %}</a></li>
-        <li><a href="{% url 'blog' %}">{% translate "Musicas" %}</a></li>
+        <li><a href="{% url 'index' %}" class="active">{% translate "Home" %}</a></li>
+        <li><a href="{% url 'about' %}">{% translate "Quem Somos" %}</a></li>
+        <li><a href="{% url 'services' %}">{% translate "Vocacional" %}</a></li>
+        <li><a href="#">{% translate "Doações" %}</a></li>
+        <li><a href="{% url 'blog' %}">{% translate "Músicas" %}</a></li>
         <li><a href="{% url 'agent' %}">{% translate "Novedades" %}</a></li>
-        <li><a href="{% url 'contact' %}">{% translate "Contacto" %}</a></li>
+        <li><a href="{% url 'contact' %}">{% translate "Fale Conosco" %}</a></li>
           <li class="dropdown dropdown-item lang-item">
             <a href="#">
               {% get_current_language as LANGUAGE_CODE %}
@@ -142,8 +143,6 @@
     </nav>
   </div>
 </header>
-
-
 <main style="margin-top: 90px;">
   {% block content %}
 
@@ -151,119 +150,78 @@
 </main>
 
 <footer id="footer" class="footer position-relative">
-
   <div class="container">
     <div class="row gy-5">
-
       <div class="col-lg-4">
         <div class="footer-content">
           <a href="#" class="logo d-flex align-items-center mb-4">
-            <span class="sitename">TheProperty</span>
+            <span class="sitename">{% translate "Irmãs Diocesanas" %}</span>
           </a>
-          <p class="mb-4">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Donec velit neque auctor sit amet aliquam vel ullamcorper sit amet ligula.</p>
-
-          <div class="newsletter-form">
-            <h5>Stay Updated</h5>
-            <form action="#" method="post" class="php-email-form">
-              <div class="input-group">
-                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
-                <button type="submit" class="btn-subscribe">
-                  <i class="bi bi-send"></i>
-                </button>
-              </div>
-              <div class="loading d-none">Loading</div>
-              <div class="error-message d-none"></div>
-              <div class="sent-message d-none">Thank you for subscribing!</div>
-            </form>
-          </div>
+          <p class="mb-4">{% translate "Ser Irmã Diocesana é ser Esposa da Palavra, que escuta com o coração e responde com a vida." %}.</p>
+          <p class="mb-4">{% translate "Cada chamado do Senhor é um convite a permanecer atentas aos seus apelos, deixando que Sua voz nos conduza a amar e servir sempre mais" %}.</p>
         </div>
       </div>
-
-      <div class="col-lg-2 col-6">
+      <div class="col-lg-1 col-0">
+      </div>
+      <div class="col-lg-3 col-6">
         <div class="footer-links">
-          <h4>Company</h4>
+          <h4>{% translate "Instituto" %}</h4>          
           <ul>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> About</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Careers</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Press</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Blog</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Contact</a></li>
+            <li><a href="{% url 'about' %}"><i class="bi bi-chevron-right"></i>{% translate "Quem Somos" %}</a></li>
+            <li><a href="{% url 'services' %}"><i class="bi bi-chevron-right"></i>{% translate "Vocacional" %}</a></li>
+            <li><a href="#"><i class="bi bi-chevron-right"></i>{% translate "Doações" %}</a></li>
+            <li><a href="{% url 'blog' %}"><i class="bi bi-chevron-right"></i>{% translate "Músicas" %}</a></li>
+            <li><a href="{% url 'agent' %}"><i class="bi bi-chevron-right"></i>{% translate "Novedades" %}</a></li>
+            <li><a href="{% url 'contact' %}"><i class="bi bi-chevron-right"></i>{% translate "Fale Conosco" %}</a></li>
           </ul>
         </div>
-      </div>
-
-      <div class="col-lg-2 col-6">
-        <div class="footer-links">
-          <h4>Solutions</h4>
-          <ul>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Digital Strategy</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Cloud Computing</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Data Analytics</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> AI Solutions</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i> Cybersecurity</a></li>
-          </ul>
-        </div>
-      </div>
-
+      </div>    
       <div class="col-lg-4">
         <div class="footer-contact">
           <h4>Get in Touch</h4>
           <div class="contact-item">
             <div class="contact-icon"><i class="bi bi-geo-alt"></i></div>
             <div class="contact-info">
-              <p>2847 Maple Avenue<br>Los Angeles, CA 90210<br>United States</p>
+              <p>Rua Compositor Rosil Cavalcanti, 130 - Jardim Planalto <br>João Pessoa - PB, 58088-000</p>
             </div>
           </div>
-
           <div class="contact-item">
             <div class="contact-icon"><i class="bi bi-telephone"></i></div>
             <div class="contact-info">
-              <p>+1 (555) 987-6543</p>
+              <p>+55 (83) 99616-0316</p>
             </div>
           </div>
-
           <div class="contact-item">
             <div class="contact-icon"><i class="bi bi-envelope"></i></div>
             <div class="contact-info">
-              <p>contact@example.com</p>
+              <p>irmasdiocesanas@gmail.com</p>
             </div>
           </div>
-
           <div class="social-links">
-            <a href="#"><i class="bi bi-facebook"></i></a>
-            <a href="#"><i class="bi bi-twitter-x"></i></a>
-            <a href="#"><i class="bi bi-linkedin"></i></a>
-            <a href="#"><i class="bi bi-youtube"></i></a>
-            <a href="#"><i class="bi bi-github"></i></a>
+            <a href="https://www.facebook.com/p/Irm%C3%A3s-Diocesanas-100008917719871/"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/irmasdiocesanas/"><i class="bi bi-instagram"></i></a>
+            <a href="www.youtube.com/@irmasdiocesanas"><i class="bi bi-youtube"></i></a>
           </div>
         </div>
       </div>
-
     </div>
   </div>
-
   <div class="footer-bottom">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6">
           <div class="copyright">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">MyWebsite</strong> <span>All Rights Reserved</span></p>
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">Irmãs Diocesanas</strong> <span>All Rights Reserved</span></p>
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="footer-bottom-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
-          </div>
           <div class="credits">
-            Designed by <a href="https://bootstrapmade.com/" target="_blank" rel="noopener">BootstrapMade</a>
+            Designed by <a href="https://www.inoobrar.com.br" target="_blank" rel="noopener">Innobrar Solutions</a>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </footer>
 
 <!-- Scroll Top -->
