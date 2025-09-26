@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.contrib.auth.views import LogoutView  
 
 from landing.views import ( index,about, services, blog,agent, contact, login_view, favorite, map,  dashboard, my_properties, chat_support, hidden_listings, 
-settings_view, profile_view
+settings_view, profile_view, doacoes, musicas
 )
 
 
@@ -22,6 +22,8 @@ urlpatterns = [
     path('services/', services, name='services'),
     path('blog/', blog, name='blog'),
     path('agent/', agent, name='agent'),
+    path('doacoes_all/', doacoes, name='doacoes'),
+    path('musicas/', musicas, name='musicas'),
     path('contact/', contact, name='contact'),
     
 

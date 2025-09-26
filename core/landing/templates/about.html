@@ -95,72 +95,83 @@
     <div class="hero-section">
       <div class="overlay">
         <div class="container text-center">
-          {% comment %} <h1 class="hero-title">{% translate "Contacto" %}</h1> {% endcomment %}
+          {% comment %} <h1 class="hero-title">{% translate "Contato" %}</h1> {% endcomment %}
         </div>
       </div>
     </div>
     <nav class="breadcrumbs">
       <div class="container">
         <ol>
-          <li><a href="{% url 'index' %}">{% translate "Home" %}</a></li>
-          <li class="current">{% translate "About" %}</li>
+          <li><a href="{% url 'index' %}">{% translate "Início" %}</a></li>
+          <li class="current">{% translate "Sobre Nós" %}</li>
         </ol>
       </div>
     </nav>
   </div>
+  
+  <!-- Quem Somos -->
   <section class="real-estate-services-3 services section" id="services">
     <div class="container" data-aos="fade-up" data-aos-delay="100">   
       <div class="cta-section" data-aos="fade-up" data-aos-delay="400">
         <div class="row align-items-center">
           <div class="quem-somos-card ">
             <h5>
-              {% translate "Somos na Igreja de Cristo, um Instituto Apostólico de Vida Religiosa Consagrada, por natureza uma Associação Pública de fiéis que deseja na Igreja ser oferta generosa e alegre de zelo missionário junto aos seus Pastores, pastorais, movimentos e serviços, até que haja um só pastor e um só rebanho (Jo 10,16) e especialmente para aqueles que o nosso Senhor mais prefere: os pobres!" %}
+              {% blocktrans %}
+              Somos na Igreja de Cristo, um Instituto Apostólico de Vida Religiosa Consagrada,
+              por natureza uma Associação Pública de fiéis que deseja ser, na Igreja, oferta generosa
+              e alegre de zelo missionário junto aos seus Pastores, pastorais, movimentos e serviços,
+              até que haja um só Pastor e um só rebanho (Jo 10,16), especialmente para aqueles que
+              o nosso Senhor mais prefere: os pobres!
+              {% endblocktrans %}
             </h5>
           </div>
         </div>
       </div>  
     </div>  
   </section>
+  
+  <!-- Nossa Visão / Fé / Comunidade -->
   <section id="agents" class="agents section">
     <div class="container" data-aos="fade-up" data-aos-delay="100">
       <div class="row gy-4">    
-        <!-- Nuestra Visión -->
+        <!-- Nossa Visão -->
         <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
           <div class="agent-card text-center p-3 shadow-sm rounded h-100">
             <div class="agent-info">
-              <h4 class="fw-bold mb-3">{% translate "Nuestra Visión" %}</h4>
+              <h4 class="fw-bold mb-3">{% translate "Nossa Visão" %}</h4>
               <p class="text-secondary lh-lg">
-                {% translate "Anunciamos el Evangelio con esperanza, iluminando la vida de cada persona y acompañando con amor su camino de fe." %}
+                {% translate "Anunciamos o Evangelho com esperança, iluminando a vida de cada pessoa e acompanhando com amor seu caminho de fé." %}
               </p>
             </div>
           </div>
         </div>  
-        <!-- Nuestra Fe -->
+        <!-- Nossa Fé -->
         <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
           <div class="agent-card text-center p-3 shadow-sm rounded h-100">
             <div class="agent-info">
-              <h4 class="fw-bold mb-3">{% translate "Nuestra Fe" %}</h4>
+              <h4 class="fw-bold mb-3">{% translate "Nossa Fé" %}</h4>
               <p class="text-secondary lh-lg">
-                {% translate "Nuestra fe nos sostiene y nos impulsa a seguir a Cristo con entrega total, llevando su luz a quienes más lo necesitan." %}
+                {% translate "Nossa fé nos sustenta e nos impulsiona a seguir a Cristo com entrega total, levando sua luz a quem mais necessita." %}
               </p>
             </div>
           </div>
         </div>
-        <!-- Nuestra Comunidad -->
+        <!-- Nossa Comunidade -->
         <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
           <div class="agent-card text-center p-3 shadow-sm rounded h-100">
             <div class="agent-info">
-              <h4 class="fw-bold mb-3">{% translate "Nuestra Comunidad" %}</h4>
+              <h4 class="fw-bold mb-3">{% translate "Nossa Comunidade" %}</h4>
               <p class="text-secondary lh-lg">
-                {% translate "Vivimos la fraternidad, compartiendo nuestra vocación en comunidad y sirviendo juntas al pueblo de Dios." %}
+                {% translate "Vivemos a fraternidade, partilhando nossa vocação em comunidade e servindo juntas ao povo de Deus." %}
               </p>
             </div>
           </div>
         </div>  
-  
       </div>
     </div>
   </section>
+  
+  <!-- Madre Isis -->
   <section id="agents" class="agents section">
     <div class="container" data-aos="fade-up" data-aos-delay="100">
       <div class="row justify-content-center align-items-center">
@@ -168,7 +179,7 @@
         <div class="col-lg-4 col-md-5 text-center" data-aos="fade-right" data-aos-delay="200">
           <div class="featured-agent">
             <img src="{% static 'assets/img/hermana1.png' %}" 
-                 alt="Featured Agent" 
+                 alt="{% translate 'Madre Isis Stela' %}" 
                  class="img-fluid agente-img">
           </div>
         </div>
@@ -181,93 +192,74 @@
             </span>
             <blockquote class="bio-text">
               {% blocktrans %}
-              Aos 24 de abril de 2010, Jesus inspirava em seu coração algo novo, uma inquietação que resultaria em uma profunda resposta. 
-              Sua vida voltada inteiramente para saber o que o Senhor dela esperava, também alcançou outras jovens.
-              Entre 12 e 15 de outubro de 2013, o desejo do Coração de Nosso Senhor tornou-se concreto, Madre Isis fundou o Carisma do Instituto das Irmãs Diocesanas!
-              A Cidade de Santa Rita, na Paraíba, foi solo de Fundação. 
-              Ser Elo de Aliança entre o Bom Pastor e suas ovelhas, até que haja um só Pastor e um só rebanho (Jo 10,16) – Tendo como modelo a Virgem Maria nas Bodas de Caná.
+              Em 24 de abril de 2010, Jesus inspirou em seu coração algo novo, uma inquietação que resultaria em uma profunda resposta. 
+              Sua vida voltada inteiramente para discernir a vontade do Senhor também alcançou outras jovens.
+              Entre 12 e 15 de outubro de 2013, o desejo do Coração de Nosso Senhor tornou-se concreto: Madre Isis fundou o Carisma do Instituto das Irmãs Diocesanas!
+              A cidade de Santa Rita, na Paraíba, foi o solo de Fundação. 
+              Ser elo de aliança entre o Bom Pastor e suas ovelhas, até que haja um só Pastor e um só rebanho (Jo 10,16), tendo como modelo a Virgem Maria nas Bodas de Caná.
               {% endblocktrans %}
             </blockquote>
           </div>
         </div>
       </div>     
+      
+      <!-- Seção Equipe -->
       <div class="row mt-5">
         <div class="col-12" data-aos="fade-up" data-aos-delay="300">
-          <h4 class="section-subtitle">Our Expert Team</h4>
-          <p class="section-description">Meet our dedicated professionals who are committed to helping you find your perfect home or sell your property at the best value.</p>
+          <h4 class="section-subtitle">{% translate "Nossa Equipe" %}</h4>
+          <p class="section-description">{% translate "Conheça nossas irmãs dedicadas que servem com amor e compromisso na missão." %}</p>
         </div>
       </div>
+
       <div class="row gy-4">
         <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
           <div class="agent-card">
             <div class="agent-photo">
-              <img src="{% static 'assets/img/hermana2.png' %}" alt="Agent" class="img-fluid">
+              <img src="{% static 'assets/img/hermana2.png' %}" alt="{% translate 'Irmã' %}" class="img-fluid">
             </div>
             <div class="agent-info">
-              <h5>Michael Chen</h5>
-              <span class="role">Property Consultant</span>
-              <div class="location">
-                <i class="bi bi-geo-alt"></i>
-                <span>Brooklyn Heights</span>
-              </div>
-              <a href="#" class="view-listings">View Listings</a>
+              <h5>{% translate "Irmã 1" %}</h5>
+              <span class="role">{% translate "Missão Pastoral" %}</span>
             </div>
           </div>
         </div>
+        
         <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
           <div class="agent-card">
             <div class="agent-photo">
-              <img src="{% static 'assets/img/hermana3.png' %}" alt="Agent" class="img-fluid">
-              <div class="hover-overlay">                
-              </div>
+              <img src="{% static 'assets/img/hermana3.png' %}" alt="{% translate 'Irmã' %}" class="img-fluid">
             </div>
             <div class="agent-info">
-              <h5>Michael Chen</h5>
-              <span class="role">Property Consultant</span>
-              <div class="location">
-                <i class="bi bi-geo-alt"></i>
-                <span>Brooklyn Heights</span>
-              </div>
-              <a href="#" class="view-listings">View Listings</a>
+              <h5>{% translate "Irmã 2" %}</h5>
+              <span class="role">{% translate "Educação e Catequese" %}</span>
             </div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+
+        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
           <div class="agent-card">
             <div class="agent-photo">
-              <img src="{% static 'assets/img/hermana2.png' %}" alt="Agent" class="img-fluid">
-              <div class="hover-overlay">                  
-              </div>
+              <img src="{% static 'assets/img/hermana2.png' %}" alt="{% translate 'Irmã' %}" class="img-fluid">
             </div>
             <div class="agent-info">
-              <h5>Michael Chen</h5>
-              <span class="role">Property Consultant</span>
-              <div class="location">
-                <i class="bi bi-geo-alt"></i>
-                <span>Brooklyn Heights</span>
-              </div>
-              <a href="#" class="view-listings">View Listings</a>
+              <h5>{% translate "Irmã 3" %}</h5>
+              <span class="role">{% translate "Serviço Comunitário" %}</span>
             </div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+
+        <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="400">
           <div class="agent-card">
             <div class="agent-photo">
-              <img src="{% static 'assets/img/hermana3.png' %}" alt="Agent" class="img-fluid">
-              <div class="hover-overlay">
-              </div>
+              <img src="{% static 'assets/img/hermana3.png' %}" alt="{% translate 'Irmã' %}" class="img-fluid">
             </div>
             <div class="agent-info">
-              <h5>Michael Chen</h5>
-              <span class="role">Property Consultant</span>
-              <div class="location">
-                <i class="bi bi-geo-alt"></i>
-                <span>Brooklyn Heights</span>
-              </div>
-              <a href="#" class="view-listings">View Listings</a>
+              <h5>{% translate "Irmã 4" %}</h5>
+              <span class="role">{% translate "Missão Social" %}</span>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import date, timedelta, datetime
 from .models import Configuracion, Cartera, Caja, TareaUsuario, MensajeUsuario, AlertaUsuario, Comprobante, Propiedad
 from .models import Pantalla, AccesoPerfil
-from .forms import LoginForm, MyPasswordChangeForm, MensajeForm, AsignarAlertaForm, AsignarTareaForm, ConfiguracionSistemaForm, ConfiguracionForm
+from .forms import LoginForm, MyPasswordChangeForm, MensajeForm, AsignarAlertaForm, AsignarTareaForm, ConfiguracionSistemaForm, ConfiguracionForm,  DoacaoForm
 from .forms import PropiedadABMForm
 #from .forms import ComprobanteABMForm, CarteraABMForm, MovimientosCajaForm, AccesoABMForm
 from decimal import Decimal
@@ -18,6 +18,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.apps import apps
 from django.utils import timezone
+from django.contrib import messages
 
 
 ##---------------------LOGIN--------------------
@@ -52,8 +53,21 @@ def about(request):
 def services(request):
     return render(request, 'services.html')
 
+def doacoes(request):
+    if request.method == "POST":
+        form = DoacaoForm(request.POST)
+        if form.is_valid():
+            # Guardar o procesar la donación
+            messages.success(request, "🙏 Obrigado pela sua doação!")
+    else:
+        form = DoacaoForm()
+    return render(request, "doacoes.html", {"form": form})
 def blog(request):
     return render(request, 'blog.html')
+
+def musicas(request):
+    return render(request, 'musicas.html')
+
 
 def agent(request):
     return render(request, 'agents.html')

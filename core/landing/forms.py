@@ -19,8 +19,6 @@ class RegularForm(Form):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
-
-
 class LoginForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -28,7 +26,6 @@ class LoginForm(forms.Form):
             field.widget.attrs['class'] = 'form-control p_input'
     username = forms.CharField(max_length=63)
     password = forms.CharField(max_length=63, widget=forms.PasswordInput)
-
 
 class MyPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
@@ -47,6 +44,17 @@ class MensajeForm(BaseForm):
         fields = '__all__'
         exclude = ['usuario_from', 'timestamp', 'leido', 'leido_cc'] 
 
+class Doacoes(BaseForm):
+    from django import forms
+
+class DoacaoForm(forms.Form):
+    nome = forms.CharField(label="Nome", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    sobrenome = forms.CharField(label="Sobrenome", max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    doar_em_nome_de = forms.CharField(label="Doar em nome de", max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    telefone = forms.CharField(label="Telefone", max_length=20, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    data_nascimento = forms.DateField(label="Data de nascimento", widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
+    mensagem = forms.CharField(label="Mensagem", required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}))
 
 
 class AsignarAlertaForm(BaseForm):

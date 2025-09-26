@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<style>
+  .hero-section {
+    position: relative;
+    height: 450px; /* ajustá la altura */
+    background: url("{% static 'assets/img/doa.png' %}") no-repeat center center;
+    background-size: cover;
+  }
+  
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.1); /* máscara blanca suave */
+    backdrop-filter: blur(0px); /* difumina la imagen */
+  }
+  
+  .hero-section .overlay {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #fff; /* o un tono oscuro según la máscara */
+  }
+  .agent-card {
+    background-color: #fff;
+    color: #333;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .agent-card h4,
+  .agent-card p {
+    transition: color 0.3s ease-in-out;
+  }
+  
+  /* Efecto hover */
+  .agent-card:hover {
+    background-color: #967673; /* podés cambiar a violeta, azul, dorado según tu estilo */
+    color: #fff;
+    transform: translateY(-5px); /* levanta un poco la card */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .agent-card:hover h4,
+  .agent-card:hover p {
+    color: #fff !important;
+  }
+  .agente-img {
+    max-width: 400px;   /* más grande */
+    height: auto;
+    border-radius: 15px; /* bordes redondeados */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* sombra elegante */
+    margin: 0 auto;
+  }
+  .bio-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: justify;
+    max-width: 90%;
+    margin-top: 15px;
+    padding: 15px 20px;
+    background: #fdfdfd;
+    border-left: 5px solid #82544b; /* usa el rojo de la paleta */
+    border-radius: 6px;
+    font-style: italic;
+    color: #444;
+  }
+
+  
+  .quem-somos-card h5 {
+    color: #ffffff;               /* letras blancas */
+    font-size: 22px;              /* tamaño proporcionado */
+    line-height: 1.8;             /* interlineado elegante */
+    font-weight: 400;             /* no muy grueso */
+    font-family: 'Montserrat', sans-serif; /* tipografía limpia */
+
+     
+  }
+</style>  
+<main class="main">
+  <div class="page-title">
+    <div class="hero-section">
+      <div class="overlay">
+        <div class="container text-center">
+          {% comment %} <h1 class="hero-title">{% translate "Contato" %}</h1> {% endcomment %}
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="{% url 'index' %}">{% translate "Início" %}</a></li>
+          <li class="current">{% translate "Doações" %}</li>
+        </ol>
+      </div>
+    </nav>
+  </div>
+  
+  <!-- Quem Somos -->
+  {% comment %} <section class="real-estate-services-3 services section" id="services">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">   
+      <div class="cta-section" data-aos="fade-up" data-aos-delay="400">
+        <div class="row align-items-center">
+          <div class="quem-somos-card ">
+            <h5>
+              {% blocktrans %}
+              Somos na Igreja de Cristo, um Instituto Apostólico de Vida Religiosa Consagrada,
+              por natureza uma Associação Pública de fiéis que deseja ser, na Igreja, oferta generosa
+              e alegre de zelo missionário junto aos seus Pastores, pastorais, movimentos e serviços,
+              até que haja um só Pastor e um só rebanho (Jo 10,16), especialmente para aqueles que
+              o nosso Senhor mais prefere: os pobres!
+              {% endblocktrans %}
+            </h5>
+          </div>
+        </div>
+      </div>  
+    </div>  
+  </section> {% endcomment %}
+  
+  <!-- Nossa Visão / Fé / Comunidade -->
+  <section id="agents" class="agents section">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          <div class="card shadow-lg p-4">
+            <h2 class="text-center mb-4">{% translate "Faça sua Doação" %}</h2>
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">{% translate "Enviar" %}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+</main>
+{% endblock %}
