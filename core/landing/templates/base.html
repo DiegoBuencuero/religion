@@ -9,6 +9,7 @@
   <title>Irmãs Diocesanas</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
+  <link href="{% static 'assets/img/logochico.png' %}" rel="icon">
 
   <!-- Favicons -->
   <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
@@ -66,15 +67,18 @@
     height: auto !important;
     border-radius: 2px !important;
   }
-  
+  .logo-img {
+    height: 300px !important;   /* antes estaba en 50px */
+    width: auto;                /* mantiene proporción */
+  }
 
 </style>
 <body>
 <header id="header" class="header d-flex align-items-center fixed-top">
   <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-    <a href="#" class="logo d-flex align-items-center me-auto me-xl-0">
-      <h1 class="sitename">TheProperty</h1>
+    <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
+      <img src="{% static 'assets/img/logo.png' %}" alt="Logo" class="logo-img">
     </a>
     <nav id="navmenu" class="navmenu">
       <ul>

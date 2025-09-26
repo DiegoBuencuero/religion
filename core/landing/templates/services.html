@@ -78,6 +78,23 @@
     font-style: italic;
     color: #444;
   }
+
+  .timeline-icon {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .timeline-icon img {
+    width: 130px;
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+  
+  .timeline-icon img:hover {
+    transform: scale(1.15);
+  }
+
+ 
 </style>  
 <main class="main">
   <div class="page-title">
@@ -96,7 +113,7 @@
         </ol>
       </div>
     </nav>
-  </div>
+  </div>  
   <section id="about" class="about section">   
     <div class="container"> 
       <div class="timeline-section" data-aos="fade-up" data-aos-delay="400">
@@ -106,42 +123,107 @@
               <h3>{% translate "Nuestro Camino de Formación" %}</h3>
               <p>{% translate "Un recorrido guiado por la fe, la entrega y el amor al Divino Corazón." %}</p>
             </div>
-    
+  
             <div class="timeline">
+              <!-- Vocacional -->
               <div class="timeline-item" data-aos="fade-right" data-aos-delay="450">
-                <div class="timeline-year">2010</div>
+                <div class="timeline-icon">
+                  <img src="{% static 'assets/img/1.webp' %}" alt="Vocacional">
+                </div>
                 <div class="timeline-content">
-                  <h4>{% translate "Primera Etapa de Formación" %}</h4>
-                  <p>{% translate "Tiempo inicial para profundizar en la experiencia humana y cristiana, donde la candidata comienza a discernir su vocación. Esta etapa dura un año." %}</p>
+                  <h4>{% translate "Vocacional" %}</h4>
+                  <p class="timeline-text">
+                    {% translate "Tiempo inicial para discernir el llamado de Dios." %}
+                    <br>
+                    {% translate "Encuentros y acompañamiento espiritual." %}
+                  </p>
                 </div>
               </div>
+  
+              <!-- Aspirantado -->
               <div class="timeline-item" data-aos="fade-left" data-aos-delay="500">
-                <div class="timeline-year">2015</div>
+                <div class="timeline-icon">
+                  <img src="{% static 'assets/img/2.webp' %}" alt="Aspirantado">
+                </div>
                 <div class="timeline-content">
-                  <h4>{% translate "Segunda Etapa de Formación" %}</h4>
-                  <p>{% translate "Aquí comienza la vida plena en comunidad. La novicia se adentra en la vida religiosa, con una duración de dos años, uno de ellos de carácter canónico." %}</p>
+                  <h4>{% translate "Aspirantado" %}</h4>
+                  <p class="timeline-text">
+                    {% translate "Etapa de integración a la comunidad." %}
+                    <br>
+                    {% translate "Confirma el deseo de vida consagrada." %}
+                  </p>
                 </div>
               </div>
+  
+              <!-- Postulantado -->
               <div class="timeline-item" data-aos="fade-right" data-aos-delay="550">
-                <div class="timeline-year">2020</div>
+                <div class="timeline-icon">
+                  <img src="{% static 'assets/img/3.webp' %}" alt="Postulantado">
+                </div>
                 <div class="timeline-content">
-                  <h4>{% translate "Tercera Etapa de Formación" %}</h4>
-                  <p>{% translate "Es el tiempo de votos temporales, normalmente de seis años. La hermana profundiza en su fe, vida comunitaria y misión apostólica, preparándose para la profesión perpetua." %}</p>
+                  <h4>{% translate "Postulantado" %}</h4>
+                  <p class="timeline-text">
+                    {% translate "La postulante vive en comunidad." %}
+                    <br>
+                    {% translate "Profundiza en oración y servicio apostólico." %}
+                  </p>
                 </div>
               </div>
+  
+              <!-- Noviciado -->
               <div class="timeline-item" data-aos="fade-left" data-aos-delay="600">
-                <div class="timeline-year">2024</div>
+                <div class="timeline-icon">
+                  <img src="{% static 'assets/img/4.webp' %}" alt="Noviciado">
+                </div>
                 <div class="timeline-content">
-                  <h4>{% translate "Etapa Continua" %}</h4>
-                  <p>{% translate "La hermana ya profesada sigue creciendo en la fe y en la misión, permaneciendo fiel al carisma, con formación humana, espiritual y pastoral a lo largo de toda la vida." %}</p>
+                  <h4>{% translate "Noviciado" %}</h4>
+                  <p class="timeline-text">
+                    {% translate "Dos años de formación espiritual." %}
+                    <br>
+                    {% translate "Plena integración a la vida religiosa." %}
+                  </p>
                 </div>
               </div>
+  
+              <!-- Juniorato -->
+              <div class="timeline-item" data-aos="fade-right" data-aos-delay="650">
+                <div class="timeline-icon">
+                  <img src="{% static 'assets/img/4.webp' %}" alt="Juniorato">
+                </div>
+                <div class="timeline-content">
+                  <h4>{% translate "Juniorato" %}</h4>
+                  <p class="timeline-text">
+                    {% translate "Tiempo de votos temporales." %}
+                    <br>
+                    {% translate "Crecimiento en la misión y maduración personal." %}
+                  </p>
+                </div>
+              </div>
+  
+              <!-- Votos perpetuos -->
+              <div class="timeline-item" data-aos="fade-left" data-aos-delay="700">
+                <div class="timeline-icon">
+                  <img src="{% static 'assets/img/61.png' %}" alt="Votos Perpetuos">
+                </div>
+                <div class="timeline-content">
+                  <h3>{% translate "Votos Perpetuos" %}</h3>
+                  <p class="timeline-text">
+                    {% translate "Entrega definitiva a Cristo y a la Iglesia." %}
+                    <br>
+                    {% translate "Fidelidad de por vida." %}
+                  </p>
+                </div>
+              </div>
+  
             </div>
           </div>
         </div>
       </div>  
     </div>  
-</section> 
+  </section>
+  
+  
+
 </main>
 {% endblock %}
 
