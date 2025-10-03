@@ -6,7 +6,7 @@
   .hero-section {
     position: relative;
     height: 450px; /* ajustá la altura */
-    background: url("{% static 'assets/img/img4.png' %}") no-repeat center center;
+    background: url("{% static 'assets/img/musica1.png' %}") no-repeat center center;
     background-size: cover;
   }
   
@@ -29,70 +29,46 @@
     justify-content: center;
     height: 100%;
   }
-  
-  .hero-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #82544b; /* o un tono oscuro según la máscara */
-  }
-  .agent-card {
-    background-color: #fff;
-    color: #333;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .agent-card h4,
-  .agent-card p {
-    transition: color 0.3s ease-in-out;
-  }
-  
-  /* Efecto hover */
-  .agent-card:hover {
-    background-color: #967673; /* podés cambiar a violeta, azul, dorado según tu estilo */
-    color: #fff;
-    transform: translateY(-5px); /* levanta un poco la card */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  .agent-card:hover h4,
-  .agent-card:hover p {
-    color: #fff !important;
-  }
-  .agente-img {
-    max-width: 400px;   /* más grande */
-    height: auto;
-    border-radius: 15px; /* bordes redondeados */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* sombra elegante */
-    margin: 0 auto;
-  }
-  .bio-text {
-    font-size: 1rem;
-    line-height: 1.7;
-    text-align: justify;
-    max-width: 90%;
-    margin-top: 0px;
-    padding: 15px 20px;
-    background: #fdfdfd;
-    border-left: 5px solid #82544b; /* usa el rojo de la paleta */
-    border-radius: 6px;
-    font-style: italic;
-    color: #444;
-  }
 
-  .timeline-icon {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
-  .timeline-icon img {
-    width: 130px;
-    height: auto;
-    transition: transform 0.3s ease;
-  }
-  
-  .timeline-icon img:hover {
-    transform: scale(1.15);
-  }
+  /* Botón YouTube */
+.btn-youtube {
+  background-color: #FF0000;  /* rojo oficial */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.btn-youtube:hover {
+  background-color: #cc0000;  /* rojo más oscuro al hover */
+  color: white;
+}
+
+/* Botón Spotify */
+.btn-spotify {
+  background-color: #1DB954;  /* verde oficial */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+.btn-spotify:hover {
+  background-color: #1aa34a;  /* verde más oscuro al hover */
+  color: white;
+}
+/* Hover en videos */
+.ratio iframe {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px; /* opcional: esquinas redondeadas */
+}
+
+.ratio iframe:hover {
+  transform: scale(1.05); /* agranda un poquito */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25); /* sombra elegante */
+}
  
 </style>  
 <main class="main">
@@ -100,130 +76,120 @@
     <div class="hero-section">
       <div class="overlay">
         <div class="container text-center">
-          <h1 class="hero-title">{% translate "Servicios y vocación" %}</h1>
+          <h1 class="hero-title">{% translate "Nossas Músicas" %}</h1>
         </div>
       </div>
     </div>
     <nav class="breadcrumbs">
       <div class="container">
         <ol>
-          <li><a href="{% url 'index' %}">{% translate "Home" %}</a></li>
-          <li class="current">{% translate "About" %}</li>
+          <li><a href="{% url 'musicas' %}">{% translate "Home" %}</a></li>
+          <li class="current">{% translate "Musicas" %}</li>
         </ol>
       </div>
     </nav>
   </div>  
-  <section id="about" class="about section">   
-    <div class="container"> 
-      <div class="timeline-section" data-aos="fade-up" data-aos-delay="400">
-        <div class="row justify-content-center">
-          <div class="col-lg-10">
-            <div class="section-header text-center mb-5">
-              <h3>{% translate "Nosso Caminho de Formação" %}</h3>
-              <p>{% translate "Um percurso guiado pela fé, entrega e amor ao Divino Coração." %}</p>
-            </div>
-  
-            <div class="timeline">
-              <!-- Vocacional -->
-              <div class="timeline-item" data-aos="fade-right" data-aos-delay="450">
-                <div class="timeline-icon">
-                  <img src="{% static 'assets/img/1.webp' %}" alt="Vocacional">
-                </div>
-                <div class="timeline-content">
-                  <h4>{% translate "Vocacional" %}</h4>
-                  <p class="timeline-text">
-                    {% translate "Tempo inicial para discernir o chamado de Deus." %}
-                    <br>
-                    {% translate "Encontros e acompanhamento espiritual." %}
-                  </p>
-                </div>
-              </div>
-  
-              <!-- Aspirantado -->
-              <div class="timeline-item" data-aos="fade-left" data-aos-delay="500">
-                <div class="timeline-icon">
-                  <img src="{% static 'assets/img/2.webp' %}" alt="Aspirantado">
-                </div>
-                <div class="timeline-content">
-                  <h4>{% translate "Aspirantado" %}</h4>
-                  <p class="timeline-text">
-                    {% translate "Etapa de integração à comunidade." %}
-                    <br>
-                    {% translate "Confirma o desejo de vida consagrada." %}
-                  </p>
-                </div>
-              </div>
-  
-              <!-- Postulantado -->
-              <div class="timeline-item" data-aos="fade-right" data-aos-delay="550">
-                <div class="timeline-icon">
-                  <img src="{% static 'assets/img/3.webp' %}" alt="Postulantado">
-                </div>
-                <div class="timeline-content">
-                  <h4>{% translate "Postulado" %}</h4>
-                  <p class="timeline-text">
-                    {% translate "A postulante vive em comunidade." %}
-                    <br>
-                    {% translate "Aprofunda-se na oração e no serviço apostólico." %}
-                  </p>
-                </div>
-              </div>
-  
-              <!-- Noviciado -->
-              <div class="timeline-item" data-aos="fade-left" data-aos-delay="600">
-                <div class="timeline-icon">
-                  <img src="{% static 'assets/img/4.webp' %}" alt="Noviciado">
-                </div>
-                <div class="timeline-content">
-                  <h4>{% translate "Noviciado" %}</h4>
-                  <p class="timeline-text">
-                    {% translate "Dois anos de formação espiritual." %}
-                    <br>
-                    {% translate "Plena integração à vida religiosa." %}
-                  </p>
-                </div>
-              </div>
-  
-              <!-- Juniorato -->
-              <div class="timeline-item" data-aos="fade-right" data-aos-delay="650">
-                <div class="timeline-icon">
-                  <img src="{% static 'assets/img/4.webp' %}" alt="Juniorato">
-                </div>
-                <div class="timeline-content">
-                  <h4>{% translate "Juniorato" %}</h4>
-                  <p class="timeline-text">
-                    {% translate "Tempo de votos temporários." %}
-                    <br>
-                    {% translate "Crescimento na missão e amadurecimento pessoal." %}
-                  </p>
-                </div>
-              </div>
-  
-              <!-- Votos perpetuos -->
-              <div class="timeline-item" data-aos="fade-left" data-aos-delay="700">
-                <div class="timeline-icon">
-                  <img src="{% static 'assets/img/61.png' %}" alt="Votos Perpétuos">
-                </div>
-                <div class="timeline-content">
-                  <h3>{% translate "Votos Perpétuos" %}</h3>
-                  <p class="timeline-text">
-                    {% translate "Entrega definitiva a Cristo e à Igreja." %}
-                    <br>
-                    {% translate "Fidelidade para toda a vida." %}
-                  </p>
-                </div>
-              </div>
-  
-            </div>
-          </div>
+<!-- Sección de Videos -->
+<section id="videos" class="videos section mt-3">
+  <div class="container">
+    <!-- Video Principal -->
+    <div class="section-header text-center mb-1">
+      <h3>{% translate "Siga-nos no YouTube e no Instagram para acompanhar e ouvir nossas criações musicais." %}</h3>
+    </div>    
+    <section id="botones" class="text-center my-5">
+      <div class="container d-flex justify-content-center gap-4 flex-wrap">    
+        <!-- Botón YouTube -->
+        <a href="https://www.youtube.com/tu_canal" target="_blank" 
+           class="btn-youtube d-flex align-items-center justify-content-center">
+          <i class="bi bi-youtube me-2"></i> YouTube
+        </a>    
+        <!-- Botón Spotify -->
+        <a href="https://open.spotify.com/tu_perfil" target="_blank" 
+           class="btn-spotify d-flex align-items-center justify-content-center">
+          <i class="bi bi-spotify me-2"></i> Spotify
+        </a>    
+      </div>
+    </section>
+    <!-- Fila 1 -->
+    <div class="row mb-4">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="ratio ratio-16x9">
+          <iframe
+          src="https://www.youtube.com/embed/j4euGeaetNU?si=l51YfEouED6sOoqe"
+          title="YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>        
         </div>
-      </div>  
-    </div>  
-  </section>
-  
-
-  
-
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="ratio ratio-16x9">
+          <iframe
+          src="https://www.youtube.com/embed/j4euGeaetNU?si=l51YfEouED6sOoqe"
+          title="YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          loading="lazy"
+          allowfullscreen>
+        </iframe> 
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="ratio ratio-16x9">
+          <iframe
+          src="https://www.youtube.com/embed/j4euGeaetNU?si=l51YfEouED6sOoqe"
+          title="YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          loading="lazy"
+          allowfullscreen>
+        </iframe> 
+        </div>
+      </div>
+    </div>
+    <!-- Fila 2 -->
+    <div class="row mb-4">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="ratio ratio-16x9">
+          <iframe
+          src="https://www.youtube.com/embed/j4euGeaetNU?si=l51YfEouED6sOoqe"
+          title="YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>        
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="ratio ratio-16x9">
+          <iframe
+          src="https://www.youtube.com/embed/j4euGeaetNU?si=l51YfEouED6sOoqe"
+          title="YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          loading="lazy"
+          allowfullscreen>
+        </iframe> 
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="ratio ratio-16x9">
+          <iframe
+          src="https://www.youtube.com/embed/j4euGeaetNU?si=l51YfEouED6sOoqe"
+          title="YouTube"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          loading="lazy"
+          allowfullscreen>
+        </iframe> 
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
 {% endblock %}
 

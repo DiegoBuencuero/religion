@@ -69,8 +69,12 @@ def musicas(request):
     return render(request, 'musicas.html')
 
 
-def agent(request):
-    return render(request, 'agents.html')
+def news_list(request):
+    return render(request, 'news.html')
+
+
+def news_create(request):
+    return render(request, 'news_create.html')
 
 def contact(request):
     return render(request, 'contact.html')

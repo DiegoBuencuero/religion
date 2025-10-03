@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView  
 
-from landing.views import ( index,about, services, blog,agent, contact, login_view, favorite, map,  dashboard, my_properties, chat_support, hidden_listings, 
+from landing.views import ( index,about, services, blog, news_list, news_create, contact, login_view, favorite, map,  dashboard, my_properties, chat_support, hidden_listings, 
 settings_view, profile_view, doacoes, musicas
 )
 
@@ -21,7 +21,8 @@ urlpatterns = [
     path('about/', about, name='about'),
     path('services/', services, name='services'),
     path('blog/', blog, name='blog'),
-    path('agent/', agent, name='agent'),
+    path("news/", news_list, name="news-list"),
+    path("news/create/", news_create, name="news-create"),
     path('doacoes_all/', doacoes, name='doacoes'),
     path('musicas/', musicas, name='musicas'),
     path('contact/', contact, name='contact'),
